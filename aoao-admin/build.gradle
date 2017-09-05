@@ -2,11 +2,15 @@ apply plugin: 'war'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 gretty {
-    httpPort = 8888
+    httpPort = 8889
     contextPath =""
     servletContainer = 'jetty9'
     debugPort = 5005      // default
     debugSuspend = true   // default
 //    httpsEnabled = true
 //    httpsPort = 4430
+}
+
+bootRepackage{
+    mainClass = 'com.aoao.admin.AdminApplication'
 }

@@ -1,2 +1,4 @@
 apply plugin: 'application'
-mainClassName="com.aoao.api.ApiApplication"
+bootRepackage{
+    mainClass = 'com.aoao.api.ApiApplication'
+}

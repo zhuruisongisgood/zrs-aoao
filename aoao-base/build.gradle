@@ -1,1 +1,2 @@
 apply plugin: 'java-library'
+bootRepackage.enabled = false
