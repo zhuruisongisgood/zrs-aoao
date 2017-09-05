@@ -1,0 +1,82 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.4.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        maven { url "http://repo1.maven.org/maven2/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://repo.spring.io/release/" }
+        maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2/" }
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+allprojects {
+    group 'com.aoao'
+    version '1.0-SNAPSHOT'
+}
+
+subprojects {
+
+    //引入plugin 插件中心https://plugins.gradle.org/
+    apply plugin: "org.springframework.boot"
+    apply plugin: 'idea'
+
+    //jdk1.8
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    //编码utf-8
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = "utf-8"
+
+    repositories {
+        jcenter()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+        }
+    }
+
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-aop"
+        compile "org.springframework.boot:spring-boot-starter-web"
+        compile "org.springframework.boot:spring-boot-configuration-processor"
+        compile "org.springframework.boot:spring-boot-devtools"
+
+        compile "org.projectlombok:lombok:1.16.12"
+        compile  "com.google.guava:guava:20.0"
+        compile "org.apache.commons:commons-lang3:3.5"
+        compile 'commons-fileupload:commons-fileupload:1.3.2'
+        compile group: 'com.alibaba', name: 'fastjson', version: '1.2.23'
+
+        testCompile "org.springframework.boot:spring-boot-starter-test"
+    }
+
+    compileJava.dependsOn(processResources)
+}
+
+//gradlew使用4.1版本
+task wrapper(type: Wrapper) {
+    gradleVersion = "4.1"
+}
+
+//模块依赖
+project(':aoao-api') {
+    dependencies {
+        compile project(':aoao-dao')
+        compile project(':aoao-base')
+    }
+}
+
+project(':aoao-base') {
+    dependencies {
+        compile project(':aoao-util')
+    }
+}
+
